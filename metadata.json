@@ -1,0 +1,6 @@
+{
+  "name": "CLIP & LLaVA Multimodal Lab & Mini-Project",
+  "description": "Comprehensive vision-language lab and assistant featuring CLIP zero-shot classification, semantic retrieval, LLaVA VQA, hallucination probing, and complete Jupyter notebook.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
