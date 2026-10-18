@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
-import { Navbar, MiniProjectMode } from './components/Navbar';
+import React from 'react';
+import { Navbar } from './components/Navbar';
 import { MiniProjectAssistantTab } from './components/MiniProjectAssistantTab';
 import { generateCompleteJupyterNotebook } from './data/notebookExport';
-import { Bot, GraduationCap } from 'lucide-react';
+import { GraduationCap } from 'lucide-react';
 
 export default function App() {
-  const [activeMode, setActiveMode] = useState<MiniProjectMode>('assistant');
-
   const handleDownloadNotebook = () => {
     try {
       const notebookJson = generateCompleteJupyterNotebook();
@@ -26,45 +24,30 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-sky-500 selection:text-white">
-      {/* Mini-Project Navbar */}
-      <Navbar
-        activeMode={activeMode}
-        setActiveMode={setActiveMode}
-        onDownloadNotebook={handleDownloadNotebook}
-      />
+      {/* Simple Clean Navbar */}
+      <Navbar onDownloadNotebook={handleDownloadNotebook} />
 
-      {/* Main Mini-Project Content */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-        <MiniProjectAssistantTab
-          activeMode={activeMode}
-          setActiveMode={setActiveMode}
-        />
+      {/* Main Content: Simple Multimodal AI Assistant */}
+      <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 pt-6">
+        <MiniProjectAssistantTab />
       </main>
 
-      {/* Student Project Footer */}
-      <footer className="border-t border-slate-800 bg-slate-900/60 text-xs text-slate-400 py-5 mt-auto">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+      {/* Clean Minimalist Footer */}
+      <footer className="border-t border-slate-800 bg-slate-900/60 text-xs text-slate-400 py-4 mt-auto">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center space-x-2">
             <GraduationCap className="w-4 h-4 text-sky-400" />
-            <span className="font-semibold text-slate-200">Vision-Language Lab &bull; Student Mini-Project</span>
+            <span className="font-semibold text-slate-200">Vision-Language Models Mini-Project</span>
             <span>&bull;</span>
-            <span className="text-slate-400">Multimodal Image Assistant</span>
+            <span className="text-slate-400">Simple Multimodal AI</span>
           </div>
 
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={() => setActiveMode('architecture')}
-              className="text-slate-400 hover:text-sky-300 transition-colors cursor-pointer"
-            >
-              How it works
-            </button>
-            <button
-              onClick={handleDownloadNotebook}
-              className="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors cursor-pointer"
-            >
-              Download Complete Notebook (.ipynb)
-            </button>
-          </div>
+          <button
+            onClick={handleDownloadNotebook}
+            className="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors cursor-pointer"
+          >
+            Download Complete Notebook (.ipynb)
+          </button>
         </div>
       </footer>
     </div>

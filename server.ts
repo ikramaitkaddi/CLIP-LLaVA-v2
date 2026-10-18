@@ -41,11 +41,28 @@ app.post('/api/multimodal/vqa', async (req: Request, res: Response) => {
 
     const contents: any[] = [];
 
+    let cleanBase64 = '';
+    let finalMime = mimeType;
+
     if (imageBase64) {
-      const cleanBase64 = imageBase64.replace(/^data:image\/\w+;base64,/, '');
+      cleanBase64 = imageBase64.replace(/^data:image\/\w+;base64,/, '');
+    } else if (req.body.imageUrl) {
+      try {
+        const imgRes = await fetch(req.body.imageUrl);
+        if (imgRes.ok) {
+          const buffer = await imgRes.arrayBuffer();
+          cleanBase64 = Buffer.from(buffer).toString('base64');
+          finalMime = imgRes.headers.get('content-type') || 'image/jpeg';
+        }
+      } catch (e) {
+        console.warn('Failed to fetch image from URL:', e);
+      }
+    }
+
+    if (cleanBase64) {
       contents.push({
         inlineData: {
-          mimeType,
+          mimeType: finalMime,
           data: cleanBase64,
         },
       });
