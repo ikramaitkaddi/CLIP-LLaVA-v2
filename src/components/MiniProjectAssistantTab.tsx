@@ -420,13 +420,13 @@ export const MiniProjectAssistantTab: React.FC<MiniProjectAssistantTabProps> = (
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <span className="font-bold text-white text-sm sm:text-base">Integrated Jupyter Lab Notebook</span>
+              <span className="font-bold text-white text-sm sm:text-base">Integrated Course Notebooks</span>
               <span className="text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 px-2 py-0.5 rounded-full font-semibold">
-                .ipynb
+                05_Assessment.ipynb
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">
-              Part I (Student Statement &amp; Answers) + Part II (Correction, Master Implementations &amp; Literature Citations)
+              Part I (Student Tasks &amp; assesment_utils tests) + Part II (Master Correction &amp; Citations) &bull; Drag &amp; drop any .ipynb
             </p>
           </div>
         </div>
@@ -438,7 +438,7 @@ export const MiniProjectAssistantTab: React.FC<MiniProjectAssistantTabProps> = (
               className="flex-1 sm:flex-initial inline-flex items-center justify-center space-x-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold px-3.5 py-2.5 rounded-xl cursor-pointer transition-all"
             >
               <BookOpen className="w-3.5 h-3.5 text-sky-400" />
-              <span>Explore Notebook</span>
+              <span>Explore / Upload</span>
             </button>
           )}
 
@@ -448,7 +448,7 @@ export const MiniProjectAssistantTab: React.FC<MiniProjectAssistantTabProps> = (
               className="flex-1 sm:flex-initial inline-flex items-center justify-center space-x-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border border-emerald-500/40 text-xs font-bold px-4 py-2.5 rounded-xl cursor-pointer shadow-md shadow-emerald-950/50 transition-all"
             >
               <Download className="w-3.5 h-3.5" />
-              <span>Download .ipynb</span>
+              <span>Download 05_Assessment.ipynb</span>
             </button>
           )}
         </div>

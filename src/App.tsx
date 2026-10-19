@@ -1,33 +1,54 @@
 import React, { useState } from 'react';
 import { Navbar, AppTab } from './components/Navbar';
 import { MiniProjectAssistantTab } from './components/MiniProjectAssistantTab';
-import { NotebookViewerTab } from './components/NotebookViewerTab';
-import { generateCompleteJupyterNotebook } from './data/notebookExport';
+import { NotebookViewerTab, NotebookChoice } from './components/NotebookViewerTab';
+import { generateCompleteJupyterNotebook, generateAssessmentNotebook } from './data/notebookExport';
 import { GraduationCap, CheckCircle2, Download, FileCode } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<AppTab>('miniproject');
   const [showDownloadToast, setShowDownloadToast] = useState(false);
+  const [downloadedFileName, setDownloadedFileName] = useState('05_Assessment.ipynb');
 
-  const handleDownloadNotebook = () => {
+  const handleDownloadNotebook = (
+    type: NotebookChoice = 'assessment', 
+    customContent?: string, 
+    customFilename?: string
+  ) => {
     try {
-      const notebookJson = generateCompleteJupyterNotebook();
+      let notebookJson = '';
+      let filename = '05_Assessment.ipynb';
+
+      if (type === 'custom' && customContent) {
+        notebookJson = customContent;
+        filename = customFilename || 'notebook.ipynb';
+      } else if (type === 'clipllava') {
+        notebookJson = generateCompleteJupyterNotebook();
+        filename = 'CLIP_and_LLaVA_Lab_Complete.ipynb';
+      } else {
+        notebookJson = generateAssessmentNotebook();
+        filename = '05_Assessment.ipynb';
+      }
+
       const blob = new Blob([notebookJson], { type: 'application/x-ipynb+json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'CLIP_and_LLaVA_Lab_Complete.ipynb';
+      a.download = filename;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
 
+      setDownloadedFileName(filename);
       setShowDownloadToast(true);
       setTimeout(() => setShowDownloadToast(false), 3500);
     } catch (err) {
       console.error('Error downloading notebook:', err);
       // Fallback to server route
-      window.location.href = '/api/notebook/download';
+      window.location.href = type === 'clipllava' 
+        ? '/api/notebook/download?file=clipllava' 
+        : '/api/notebook/download?file=assessment';
     }
   };
 
@@ -37,7 +58,7 @@ export default function App() {
       {showDownloadToast && (
         <div className="fixed top-20 right-6 z-50 bg-emerald-600 text-white px-4 py-2.5 rounded-xl shadow-xl flex items-center space-x-2 text-xs font-semibold animate-in fade-in slide-in-from-top-2 duration-200">
           <CheckCircle2 className="w-4 h-4" />
-          <span>CLIP_and_LLaVA_Lab_Complete.ipynb downloaded!</span>
+          <span>{downloadedFileName} downloaded successfully!</span>
         </div>
       )}
 
@@ -45,7 +66,7 @@ export default function App() {
       <Navbar 
         activeTab={activeTab} 
         onSelectTab={setActiveTab} 
-        onDownloadNotebook={handleDownloadNotebook} 
+        onDownloadNotebook={() => handleDownloadNotebook('assessment')} 
       />
 
       {/* Main Content Area */}
@@ -53,7 +74,7 @@ export default function App() {
         {activeTab === 'miniproject' ? (
           <MiniProjectAssistantTab 
             onNavigateToNotebook={() => setActiveTab('notebook')} 
-            onDownloadNotebook={handleDownloadNotebook} 
+            onDownloadNotebook={() => handleDownloadNotebook('assessment')} 
           />
         ) : (
           <NotebookViewerTab onDownloadNotebook={handleDownloadNotebook} />
@@ -67,7 +88,7 @@ export default function App() {
             <GraduationCap className="w-4 h-4 text-sky-400" />
             <span className="font-semibold text-slate-200">Vision-Language Models Mini-Project</span>
             <span>&bull;</span>
-            <span className="text-slate-400">Student Multimodal AI &bull; Part I &amp; Part II</span>
+            <span className="text-slate-400">Student Multimodal AI &bull; 05_Assessment.ipynb</span>
           </div>
 
           <div className="flex items-center space-x-4">
@@ -80,7 +101,7 @@ export default function App() {
             </button>
 
             <button
-              onClick={handleDownloadNotebook}
+              onClick={() => handleDownloadNotebook('assessment')}
               className="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors cursor-pointer flex items-center space-x-1"
             >
               <Download className="w-3.5 h-3.5" />

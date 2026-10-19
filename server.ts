@@ -32,8 +32,11 @@ app.get('/api/health', (req: Request, res: Response) => {
 
 // Direct notebook download endpoint
 app.get('/api/notebook/download', (req: Request, res: Response) => {
-  const notebookPath = path.resolve(__dirname, 'CLIP_and_LLaVA_Lab_Complete.ipynb');
-  res.download(notebookPath, 'CLIP_and_LLaVA_Lab_Complete.ipynb', (err) => {
+  const target = req.query.file === 'clipllava' 
+    ? 'CLIP_and_LLaVA_Lab_Complete.ipynb' 
+    : '05_Assessment.ipynb';
+  const notebookPath = path.resolve(__dirname, target);
+  res.download(notebookPath, target, (err) => {
     if (err) {
       console.error('Error downloading notebook:', err);
       if (!res.headersSent) {
