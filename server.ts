@@ -30,6 +30,19 @@ app.get('/api/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', time: new Date().toISOString() });
 });
 
+// Direct notebook download endpoint
+app.get('/api/notebook/download', (req: Request, res: Response) => {
+  const notebookPath = path.resolve(__dirname, 'CLIP_and_LLaVA_Lab_Complete.ipynb');
+  res.download(notebookPath, 'CLIP_and_LLaVA_Lab_Complete.ipynb', (err) => {
+    if (err) {
+      console.error('Error downloading notebook:', err);
+      if (!res.headersSent) {
+        res.status(500).json({ error: 'Failed to download notebook' });
+      }
+    }
+  });
+});
+
 // Endpoint for Multimodal VQA / LLaVA emulation using Gemini 3.8 Flash
 app.post('/api/multimodal/vqa', async (req: Request, res: Response) => {
   try {

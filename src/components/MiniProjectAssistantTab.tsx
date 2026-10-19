@@ -7,10 +7,21 @@ import {
   Upload, 
   Search, 
   Loader2, 
-  Layers
+  Layers,
+  FileCode,
+  Download,
+  BookOpen
 } from 'lucide-react';
 
-export const MiniProjectAssistantTab: React.FC = () => {
+interface MiniProjectAssistantTabProps {
+  onNavigateToNotebook?: () => void;
+  onDownloadNotebook?: () => void;
+}
+
+export const MiniProjectAssistantTab: React.FC<MiniProjectAssistantTabProps> = ({ 
+  onNavigateToNotebook, 
+  onDownloadNotebook 
+}) => {
   const [selectedImage, setSelectedImage] = useState<ImageItem>(BENCHMARK_IMAGES[0]);
   const [customImageBase64, setCustomImageBase64] = useState<string>('');
   const [question, setQuestion] = useState<string>('What is in this picture?');
@@ -398,6 +409,48 @@ export const MiniProjectAssistantTab: React.FC = () => {
           <span className="bg-slate-950 px-2.5 py-1 rounded-lg border border-slate-800 text-purple-400">3. LLaVA AI</span>
           <span>&rarr;</span>
           <span className="bg-slate-950 px-2.5 py-1 rounded-lg border border-slate-800 text-emerald-400">4. Answer</span>
+        </div>
+      </div>
+
+      {/* INTEGRATED NOTEBOOK SECTION CARD */}
+      <div className="bg-gradient-to-r from-slate-900 to-indigo-950/40 border border-indigo-500/30 rounded-2xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center space-x-3.5">
+          <div className="w-11 h-11 rounded-xl bg-indigo-500/20 border border-indigo-400/30 flex items-center justify-center text-indigo-400 shrink-0">
+            <FileCode className="w-6 h-6" />
+          </div>
+          <div>
+            <div className="flex items-center space-x-2">
+              <span className="font-bold text-white text-sm sm:text-base">Integrated Jupyter Lab Notebook</span>
+              <span className="text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 px-2 py-0.5 rounded-full font-semibold">
+                .ipynb
+              </span>
+            </div>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Part I (Student Statement &amp; Answers) + Part II (Correction, Master Implementations &amp; Literature Citations)
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-2.5 w-full sm:w-auto">
+          {onNavigateToNotebook && (
+            <button
+              onClick={onNavigateToNotebook}
+              className="flex-1 sm:flex-initial inline-flex items-center justify-center space-x-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold px-3.5 py-2.5 rounded-xl cursor-pointer transition-all"
+            >
+              <BookOpen className="w-3.5 h-3.5 text-sky-400" />
+              <span>Explore Notebook</span>
+            </button>
+          )}
+
+          {onDownloadNotebook && (
+            <button
+              onClick={onDownloadNotebook}
+              className="flex-1 sm:flex-initial inline-flex items-center justify-center space-x-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border border-emerald-500/40 text-xs font-bold px-4 py-2.5 rounded-xl cursor-pointer shadow-md shadow-emerald-950/50 transition-all"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Download .ipynb</span>
+            </button>
+          )}
         </div>
       </div>
     </div>
